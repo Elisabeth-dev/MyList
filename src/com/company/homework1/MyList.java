@@ -34,10 +34,10 @@ public class MyList<T> implements AdvancedList<T>, AuthorHolder {
         int rightMarker = rightBorder;
         Object pivot = array[(leftMarker + rightMarker) / 2];
         do {
-            while (comparator.compare((T)pivot, (T) array[leftMarker]) >= 0) {
+            while (comparator.compare((T)pivot, (T) array[leftMarker]) > 0) {
                 leftMarker++;
             }
-            while (comparator.compare((T)array[rightMarker], (T)pivot) >= 0) {
+            while (comparator.compare((T)array[rightMarker], (T)pivot) > 0) {
                 rightMarker--;
             }
             if (leftMarker <= rightMarker) {
