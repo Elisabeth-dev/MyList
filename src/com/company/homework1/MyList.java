@@ -24,27 +24,40 @@ public class MyList<T> implements AdvancedList<T>, AuthorHolder {
     @Override
     public AdvancedList<T> sort(Comparator<T> comparator) {
 
-        quickSort(0, size-1, comparator);
+        MyList<T> temporaryObject = new MyList<>();
 
-        return null;
+        Object[] temporaryArray = Arrays.copyOf(array,size);
+        temporaryObject.setArray(quickSort(temporaryArray,0, size-1, comparator));
+
+
+        return temporaryObject;
     }
 
-    private void quickSort(int leftBorder, int rightBorder, Comparator<T> comparator){
+    public void setArray(Object[] array) {
+        this.array = array;
+    }
+
+    public Object[] getArray() {
+        return array;
+    }
+
+
+    private Object[] quickSort(Object[] temporaryArray, int leftBorder, int rightBorder, Comparator<T> comparator){
         int leftMarker = leftBorder;
         int rightMarker = rightBorder;
-        Object pivot = array[(leftMarker + rightMarker) / 2];
+        Object pivot = temporaryArray[(leftMarker + rightMarker) / 2];
         do {
-            while (comparator.compare((T)pivot, (T) array[leftMarker]) > 0) {
+            while (comparator.compare((T)pivot, (T) temporaryArray[leftMarker]) > 0) {
                 leftMarker++;
             }
-            while (comparator.compare((T)array[rightMarker], (T)pivot) > 0) {
+            while (comparator.compare((T)temporaryArray[rightMarker], (T)pivot)  > 0) {
                 rightMarker--;
             }
             if (leftMarker <= rightMarker) {
                 if (leftMarker < rightMarker) {
-                    Object tmp = array[leftMarker];
-                    array[leftMarker] = array[rightMarker];
-                    array[rightMarker] = tmp;
+                    Object tmp = temporaryArray[leftMarker];
+                    temporaryArray[leftMarker] = temporaryArray[rightMarker];
+                    temporaryArray[rightMarker] = tmp;
                 }
                 leftMarker++;
                 rightMarker--;
@@ -52,11 +65,12 @@ public class MyList<T> implements AdvancedList<T>, AuthorHolder {
         } while (leftMarker <= rightMarker);
 
         if (leftMarker < rightBorder) {
-            quickSort(leftMarker, rightBorder, comparator);
+            quickSort(temporaryArray ,leftMarker, rightBorder, comparator);
         }
         if (leftBorder < rightMarker) {
-            quickSort(leftBorder, rightMarker, comparator);
+            quickSort(temporaryArray ,leftBorder, rightMarker, comparator);
         }
+        return temporaryArray;
     }
 
 
@@ -109,7 +123,7 @@ public class MyList<T> implements AdvancedList<T>, AuthorHolder {
     @Override
     public void addAll(SimpleList<T> list) {
        for (int i = size; i < list.size(); i++){
-           add((T)list.get(i));
+           add((T)list.get(i).get());
        }
 
     }
